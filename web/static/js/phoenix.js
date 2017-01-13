@@ -228,13 +228,12 @@ class Push {
       ref: this.ref
     })
   }
+  
+  always(callback){
+    this.receive(null, callback)
+  }
 
   receive(status, callback){
-    if(callback == null){
-      callback = status
-      status = null
-    }
-    
     if(this.hasReceived(status)){
       callback(this.receivedResp.response)
     }
