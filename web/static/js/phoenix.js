@@ -228,6 +228,10 @@ class Push {
       ref: this.ref
     })
   }
+  
+  always(callback){
+    this.receive(null, callback)
+  }
 
   receive(status, callback){
     if(this.hasReceived(status)){
@@ -242,7 +246,7 @@ class Push {
   // private
 
   matchReceive({status, response, ref}){
-    this.recHooks.filter( h => h.status === status )
+    this.recHooks.filter( h => h.status === status || h.status === null )
                  .forEach( h => h.callback(response) )
   }
 
@@ -272,7 +276,7 @@ class Push {
   }
 
   hasReceived(status){
-    return this.receivedResp && this.receivedResp.status === status
+    return this.receivedResp && (!status || this.receivedResp.status === status)
   }
 
   trigger(status, response){
